@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SportsStore.Interfaces;
+using SportsStore.ViewModels;
 
 namespace SportsStore.Controllers
 {
@@ -18,7 +19,18 @@ namespace SportsStore.Controllers
 
         public IActionResult Index(int page=1, int pageSize = 4)
         {
-            return View(repository.Products.Skip(pageSize * (page - 1)).Take(pageSize));
+            var model = new ProductListViewModel()
+            {
+                Products = repository.Products.Skip(pageSize * (page - 1)).Take(pageSize),
+                PagingInfo = new PagingInfo()
+                {
+                    Page = page,
+                    PageSize = pageSize,
+                    TotalItems = repository.Products.Count()
+                }
+            };
+
+            return View(model);
         }
     }
 }

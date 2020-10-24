@@ -2,11 +2,7 @@
 
 @foreach (var item in Model.Products)
 {
-<div>
-    <h3>@item.Name</h3>
-    <p>@item.Description</p>
-    <h4>@item.Price.ToString("c")</h4>
-</div>
+    <partial name="ProductSummary" model="item" />
 }
 
 <div 

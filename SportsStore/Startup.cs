@@ -31,6 +31,7 @@ namespace SportsStore
                 Configuration["ConnectionStrings:SportsStoreConnection"]);
             });
             services.AddScoped<IStoreRepository, StoreRepository>();
+            services.AddRazorPages();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -52,6 +53,7 @@ namespace SportsStore
                 endpoints.MapControllerRoute("category", "{category}", new { Controller = "Home", Action = "Index" });
                 endpoints.MapControllerRoute("pagination", "Products/Page{page}", new { Controller = "Home", Action = "Index" });
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapRazorPages();
             });
 
             SeedData.EnsurePopulated(app);

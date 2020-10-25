@@ -85,6 +85,13 @@ namespace SportsStore.Data
                     Description = "Gold-plated, diamond-studded King",
                     Category = "Chess",
                     Price = 1200
+                },
+                new Product
+                {
+                    Name = "Bling-Bling King Platimum",
+                    Description = "Platinum-plated, diamond-studded King",
+                    Category = "Chess",
+                    Price = 1500
                 }
                 );
                 context.SaveChanges();

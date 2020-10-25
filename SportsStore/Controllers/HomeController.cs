@@ -19,14 +19,17 @@ namespace SportsStore.Controllers
 
         public IActionResult Index(string category, int page=1, int pageSize = 4)
         {
+            var filteredProducts = repository.Products.Where(x => category == null || x.Category == category);
+            var products = filteredProducts.Skip(pageSize * (page - 1)).Take(pageSize);
             var model = new ProductListViewModel()
             {
-                Products = repository.Products.Where(x => category == null || x.Category == category).Skip(pageSize * (page - 1)).Take(pageSize),
+                Products = products,
+                CurrentCategory = category,
                 PagingInfo = new PagingInfo()
                 {
                     Page = page,
                     PageSize = pageSize,
-                    TotalItems = repository.Products.Count()
+                    TotalItems = filteredProducts.Count()
                 }
             };
 

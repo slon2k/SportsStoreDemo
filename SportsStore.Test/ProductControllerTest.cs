@@ -6,6 +6,7 @@ using SportsStore.Models;
 using SportsStore.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using Xunit;
@@ -26,7 +27,7 @@ namespace SportsStore.Test
 
             var homeController = new HomeController(mock.Object);
 
-            var result = (homeController.Index() as ViewResult).ViewData.Model as ProductListViewModel;
+            var result = (homeController.Index(category: null) as ViewResult).ViewData.Model as ProductListViewModel;
 
             var products = result.Products.ToArray();
             Assert.Equal(2, products.Length);
@@ -52,7 +53,7 @@ namespace SportsStore.Test
 
             var homeController = new HomeController(mock.Object);
 
-            var result = (homeController.Index(page: 1, pageSize: 3) as ViewResult).ViewData.Model as ProductListViewModel;
+            var result = (homeController.Index(category: null, page: 1, pageSize: 3) as ViewResult).ViewData.Model as ProductListViewModel;
             var products1 = result.Products.ToArray();
             Assert.Equal(3, products1.Length);
             Assert.Equal("Product 1", products1[0].Name);
@@ -63,7 +64,7 @@ namespace SportsStore.Test
             Assert.Equal(3, result.PagingInfo.PageSize);
             Assert.Equal(1, result.PagingInfo.Page);
 
-            result = (homeController.Index(page: 2, pageSize: 6) as ViewResult).ViewData.Model as ProductListViewModel;
+            result = (homeController.Index(category: null, page: 2, pageSize: 6) as ViewResult).ViewData.Model as ProductListViewModel;
             var products2 = result.Products.ToArray();
             Assert.Equal(2, products2.Length);
             Assert.Equal("Product 7", products2[0].Name);

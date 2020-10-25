@@ -17,11 +17,11 @@ namespace SportsStore.Controllers
             this.repository = repository;
         }
 
-        public IActionResult Index(int page=1, int pageSize = 4)
+        public IActionResult Index(string category, int page=1, int pageSize = 4)
         {
             var model = new ProductListViewModel()
             {
-                Products = repository.Products.Skip(pageSize * (page - 1)).Take(pageSize),
+                Products = repository.Products.Where(x => category == null || x.Category == category).Skip(pageSize * (page - 1)).Take(pageSize),
                 PagingInfo = new PagingInfo()
                 {
                     Page = page,

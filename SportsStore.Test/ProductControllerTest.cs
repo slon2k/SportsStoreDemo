@@ -4,11 +4,8 @@ using SportsStore.Controllers;
 using SportsStore.Interfaces;
 using SportsStore.Models;
 using SportsStore.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace SportsStore.Test
@@ -73,6 +70,42 @@ namespace SportsStore.Test
             Assert.Equal(2, result.PagingInfo.TotalPages);
             Assert.Equal(6, result.PagingInfo.PageSize);
             Assert.Equal(2, result.PagingInfo.Page);
+        }
+
+        [Fact]
+        public void Can_Filter_Category()
+        {
+            var mock = new Mock<IStoreRepository>();
+            var products = new List<Product>()
+            {
+                new Product(){ Name = "P1", Category = "Cat1" },
+                new Product(){ Name = "P2", Category = "Cat1" },
+                new Product(){ Name = "P3", Category = "Cat1" },
+                new Product(){ Name = "P4", Category = "Cat1" },
+                new Product(){ Name = "P5", Category = "Cat2" },
+                new Product(){ Name = "P6", Category = "Cat2" },
+            };
+
+            mock.Setup(x => x.Products).Returns(products.AsQueryable<Product>);
+
+            var homeController = new HomeController(mock.Object);
+
+            var result1 = (homeController.Index(category: "Cat1") as ViewResult).ViewData.Model as ProductListViewModel;
+            var result2 = (homeController.Index(category: "Cat2") as ViewResult).ViewData.Model as ProductListViewModel;
+
+            var products1 = result1.Products.ToList();
+            var products2 = result2.Products.ToList();
+
+            Assert.Equal(4, products1.Count());
+            Assert.Equal(2, products2.Count());
+
+            Assert.Equal("P1", products1[0].Name);
+            Assert.Equal("P2", products1[1].Name);
+            Assert.Equal("P3", products1[2].Name);
+            Assert.Equal("P4", products1[3].Name);
+
+            Assert.Equal("P5", products2[0].Name);
+            Assert.Equal("P6", products2[1].Name);
         }
     }
 }
